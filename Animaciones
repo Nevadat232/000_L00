@@ -1,0 +1,288 @@
+
+Animaciones · MD
+# ✨ GUÍA DE ANIMACIONES Y EFECTOS
+ 
+## Animaciones Incluidas
+ 
+Tu tabla de logros tiene varias animaciones automáticas que hacen más emocionante el desbloqueo de logros:
+ 
+---
+ 
+## 🎯 ANIMACIÓN DE SALTO (Jump Unlock)
+ 
+### Cuándo ocurre:
+- **Cada vez que desbloqueas un logro** (haces click en el checkbox)
+### Qué pasa:
+```
+1️⃣ La imagen se encoge ligeramente (scale 0.8)
+2️⃣ Salta hacia arriba rápidamente
+3️⃣ Se agranda un poco al subir (scale 1.1)
+4️⃣ Vuelve a su tamaño normal con un efecto de "rebote"
+```
+ 
+### Duración:
+- ⏱️ 0.8 segundos total
+- Usa una curva de animación especial (cubic-bezier) para verse más natural
+### Código:
+```css
+@keyframes jumpUnlock {
+    0% { transform: scale(0.8) translateY(0); }
+    50% { transform: scale(1.1) translateY(-20px); }
+    100% { transform: scale(1) translateY(0); }
+}
+```
+ 
+---
+ 
+## 🎉 ANIMACIÓN DE CELEBRACIÓN (Confetti de Emojis)
+ 
+### Cuándo ocurre:
+- **Justo después de desbloquear un logro**
+### Qué pasa:
+```
+Se crean 12 emojis que:
+  ✨ Salen del centro de la tarjeta
+  🌀 Vuelan hacia todas las direcciones
+  ⬆️ Flotan hacia arriba mientras desaparecen
+  💨 Desaparecen después de 1 segundo
+```
+ 
+### Emojis que aparecen:
+```
+🎉 🎊 ✨ ⭐ 🌟 💫 🎈 🎆
+```
+ 
+### Duración:
+- ⏱️ 1 segundo por emoji
+- Los emojis aparecen con pequeños retrasos (0.05s entre cada uno)
+### Patrón de movimiento:
+```
+        ⬆️ ✨
+      ↗️   ↖️
+    ✨   (logro)   ✨
+      ↘️   ↙️
+        ⬇️ ✨
+```
+ 
+Cada emoji vuela en una dirección diferente desde el centro.
+ 
+### Código clave:
+```javascript
+for (let i = 0; i < 12; i++) {
+    const angle = (i / 12) * Math.PI * 2;  // Distribuye en círculo
+    const distance = 80;                    // Distancia de vuelo
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
+}
+```
+ 
+---
+ 
+## 🔐 ANIMACIÓN DE LOGROS OCULTOS (Pulse)
+ 
+### Cuándo ocurre:
+- **Siempre** en los logros que aún están ocultos
+### Qué pasa:
+```
+El icono "❓" late suavemente:
+  🔴 Crece un poco y se hace más visible
+  ⚫ Se encoge y se vuelve más tenue
+  🔄 Se repite continuamente
+```
+ 
+### Duración:
+- ⏱️ 2 segundos por ciclo
+- Se repite infinitamente hasta desbloquearlo
+### Código:
+```css
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+```
+ 
+---
+ 
+## 💰 ANIMACIÓN DE MONEDAS (Bounce)
+ 
+### Cuándo ocurre:
+- **Siempre** en el header, en el ícono de monedas
+### Qué pasa:
+```
+El ícono de moneda 💰 brinca suavemente:
+  ⬆️ Sube 8px
+  ⬇️ Baja a su posición original
+  🔄 Se repite infinitamente
+```
+ 
+### Duración:
+- ⏱️ 1 segundo por ciclo
+- Se repite infinitamente
+### Código:
+```css
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+```
+ 
+---
+ 
+## 🎨 ANIMACIÓN HOVER (Tarjetas)
+ 
+### Cuándo ocurre:
+- **Cuando pasas el mouse sobre una tarjeta de logro**
+### Qué pasa:
+```
+La tarjeta:
+  📈 Sube 8px (como si flotara)
+  ✨ Brilla con más intensidad
+  🟦 El borde cambia de color
+  📦 Sombra se hace más grande
+```
+ 
+### Duración:
+- ⏱️ 0.3 segundos
+- Es suave y fluida
+### Código:
+```css
+.achievement-card:hover {
+    transform: translateY(-8px);
+    border-color: #00d9ff;
+    box-shadow: 0 15px 40px rgba(0, 217, 255, 0.2);
+}
+```
+ 
+---
+ 
+## 📊 TABLA RESUMEN DE ANIMACIONES
+ 
+| Animación | Trigger | Duración | Efecto |
+|-----------|---------|----------|--------|
+| **jumpUnlock** | Desbloquear logro | 0.8s | Imagen salta |
+| **floatUp** | Desbloquear logro | 1s | Emojis vuelan |
+| **pulse** | Logro oculto | 2s (∞) | Icono late |
+| **bounce** | Siempre | 1s (∞) | Moneda brinca |
+| **hover** | Pasar mouse | 0.3s | Tarjeta flota |
+ 
+---
+ 
+## 🔧 PERSONALIZAR ANIMACIONES
+ 
+### Cambiar duración del salto:
+ 
+En CSS, busca:
+```css
+.image-container.unlocking {
+    animation: jumpUnlock 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+```
+ 
+Cambia `0.8s` a otro valor:
+- `0.5s` = Más rápido
+- `1.2s` = Más lento
+### Cambiar altura del salto:
+ 
+En CSS, busca:
+```css
+@keyframes jumpUnlock {
+    50% { transform: scale(1.1) translateY(-20px); }
+}
+```
+ 
+Cambia `-20px` a otro valor:
+- `-10px` = Salta menos
+- `-30px` = Salta más
+### Cambiar cantidad de emojis:
+ 
+En JavaScript, busca:
+```javascript
+for (let i = 0; i < 12; i++) {  // ← Cambia este número
+```
+ 
+Opciones:
+- `8` = Menos emojis (más rápido)
+- `15` = Más emojis (más épico)
+- `20` = Máximo épico 🎊
+### Cambiar emojis de celebración:
+ 
+En JavaScript, busca:
+```javascript
+const emojis = ['🎉', '✨', '🎊', '⭐', '🌟', '💫', '🎈', '🎆'];
+```
+ 
+Reemplaza con tus emojis favoritos:
+```javascript
+const emojis = ['🚀', '⚡', '💥', '🔥', '👑', '💎', '🏆', '✨'];
+```
+ 
+---
+ 
+## 🎮 PROBAR ANIMACIONES
+ 
+### En tu navegador:
+ 
+1. Abre las DevTools (F12)
+2. Ve a la consola
+3. Pega esto:
+```javascript
+// Simular desbloqueo
+achievements[0].unlocked = true;
+toggleAchievement(0, {checked: true});
+updateDisplay();
+```
+ 
+4. ¡Verás todas las animaciones activarse!
+---
+ 
+## 📱 ANIMACIONES EN MÓVIL
+ 
+Todas las animaciones funcionan perfectamente en móvil, pero:
+ 
+- ✅ El hover se reemplaza por tap
+- ✅ Las animaciones son más suaves en dispositivos potentes
+- ⚠️ Algunos dispositivos antiguos pueden ser más lentos
+---
+ 
+## 🎬 VIDEO CONCEPTUAL
+ 
+Aquí está lo que pasa en 2 segundos cuando desbloqueas un logro:
+ 
+```
+SEGUNDO 0:
+  Usuario hace click en checkbox
+  
+SEGUNDO 0-0.8:
+  Imagen salta hacia arriba 🎯
+  Emojis empiezan a volar (con retrasos)
+  
+SEGUNDO 0.8-2:
+  Emojis siguen flotando
+  Se desvanecen gradualmente
+  Imagen vuelve a su tamaño normal
+  
+SEGUNDO 2+:
+  Todo limpio y terminado ✨
+  Logro completamente desbloqueado
+  +10 monedas sumadas
+```
+ 
+---
+ 
+## 💡 TIPS
+ 
+- Las animaciones se ejecutan **automáticamente** - no hay que hacer nada
+- Si quieres **deshabilitar** una animación, comenta el código CSS
+- Las animaciones usan **GPU aceleración** (transform/opacity) para mejor rendimiento
+- No hay **sonidos** por defecto (si quieres agregar, dímelo)
+---
+ 
+## 🚀 PRÓXIMAS IDEAS
+ 
+Puedes agregar más animaciones:
+- Sonido de "ding" al desbloquear
+- Número de monedas "volando" desde el logro al contador
+- Animación de desbloqueo progresivo
+- Partículas dinámicas
+- Efectos de brillo radiante
+¿Te gustaría agregar alguno de estos? 🎉
